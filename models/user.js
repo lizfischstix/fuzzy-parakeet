@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 const thoughtSchema = require('./thought');
-const friendSchema = require('./friend');
+// const friendSchema = require('./friend');
 
 const userSchema = new Schema(
     {
@@ -30,7 +30,7 @@ const userSchema = new Schema(
           id: false,
     },
 );
-//HELP? THIS DOESN'T SEEM QUITE RIGHT.
+//HELP! THIS DOESN'T SEEM QUITE RIGHT.  HOW WILL WE KNOW IF ANOTHER USER IS A FRIEND?.
 userSchema.virtual(`friendCount`).get(function(){
     return count.User;
 })
