@@ -12,7 +12,7 @@ module.exports = {
             //     headCount: await headCount(),
             //   };
 
-            res.json(userObj);
+            res.json(users);
         } catch (err) {
             console.log(err);
             return res.status(500).json(err);
@@ -65,7 +65,7 @@ module.exports = {
     // delete user
     async deleteUser(req, res) {
         try {
-            const user = await User.findOneAndRemove({ _id: req.params.userId });
+            const user = await User.findOneAndUpdate({ _id: req.params.userId });
 
             if (!user) {
                 return res.status(404).json({ message: 'No such user exists' });

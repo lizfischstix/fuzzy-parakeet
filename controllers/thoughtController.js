@@ -28,7 +28,15 @@ module.exports = {
   async createThought(req, res) {
     try {
       const thought = await Thought.create(req.body);
-      res.json(course);
+      const dbUserData = await User.findOneAndUpdate(
+        {  _id: req.body.userId, },
+        { $push: { thoughts: thought._id}},
+        { new: true }
+      )
+      if(!dbUserData){
+        return res.status(400).json({ message: 'Thought created but no user with this id!'})
+      }
+      res.json({ thoughtData: thought, message: 'Thought successfully created!'})
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
@@ -67,4 +75,34 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  async addReaction(req, res) {
+    try{
+      const dbThoughtData = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $addToSet: { reactions: req.body }},
+        { runValidators: true, new: true}
+      );
+      if(!dbThoughtData) {
+        return res.status(400).json({ message: 'No thought with this id!'})
+      }
+      res.json(dbThoughtData)
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  async deleteReaction(req, res) {
+    try{
+      const dbThoughtData = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $pull: { reactions: {reactionId: req.params.reactionId }}},
+        { runValidators: true, new: true}
+      );
+      if(!dbThoughtData) {
+        return res.status(400).json({ message: 'No thought with this id!'})
+      }
+      res.json(dbThoughtData)
+    } catch (err) {
+      console.log(err);
+    }
+  }
 };
