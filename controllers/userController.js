@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require('../models');
 
 module.exports = {
@@ -39,8 +40,8 @@ module.exports = {
     // create user
     async createUser(req, res) {
         try {
-            const User = await User.create(req.body);
-            res.json(User);
+            const user = await User.create(req.body);
+            res.json(user);
         } catch (err) {
             res.status(500).json(err);
         }
@@ -62,7 +63,6 @@ module.exports = {
         }
     },
     // delete user
-
     async deleteUser(req, res) {
         try {
             const user = await User.findOneAndRemove({ _id: req.params.userId });
