@@ -1,7 +1,6 @@
 const express = require('express');
 const db = require('./config/connection');
-// const routes = require('./routes');
-// off until routes are up
+const routes = require('./routes');
 
 const cwd = process.cwd();
 
@@ -15,8 +14,7 @@ const activity = cwd.includes('01-Activities')
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// app.use(routes);
-// off until routes are up
+app.use(routes);
 
 db.once('open', () => {
   app.listen(PORT, () => {
